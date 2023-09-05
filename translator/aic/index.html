@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encoding and Decoding</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/lib/alea.min.js"></script>
+</head>
+<body>
+    <h1>Ashleyan Indecipherable Code Translator</h1>
+
+    <label for="text">Enter Text:</label>
+    <input type="text" id="text" placeholder="Text to encode/decode" size="50"><br>
+
+    <label for="passphrase">Enter Passphrase:</label>
+    <input type="text" id="passphrase" placeholder="Passphrase for encoding/decoding"><br>
+
+    <button onclick="encodeText()">Encode</button>
+    <button onclick="decodeText()">Decode</button><br><br>
+
+    <label for="output">Result:</label><br>
+    <textarea id="output" rows="5" cols="50"></textarea>
+    
+    <script>
+        // Define a map to store the n-grams and their corresponding capital letters
+const nGramMap = {
+    "sud": "A",
+    "ash": "B",
+    "the": "C",
+    "and": "D",
+    "tha": "E",
+    "ent": "F",
+    "ing": "G",
+    "ion": "H",
+    "tio": "I",
+    "has": "J",
+    "was": "K",
+    "th": "L",
+    "in": "M",
+    "en": "N",
+    "nt": "O",
+    "ru": "P",
+    "an": "Q",
+    "am": "R",
+    "is": "S",
+    "it": "T",
+    "de": "U",
+    "te": "V",
+    "ar": "W",
+    "en": "X",
+    "ed": "Y",
+    "on": "Z",
+};
+
+function shuffleText(inputText, seed) {
+    // Set random seed
+    var rng = new alea(seed);
+
+    // Reversible character shuffler
+    let charTable = [];
+    let numTable = [];
+    let shuffleTable = [];
+    let resultTable = [];
+
+    // Create tables
+    for (let i = 0; i < inputText.length; i++) {
+        charTable.push(inputText.charAt(i));
+        numTable.push(charTable.length);
+        shuffleTable.push(0);
+    }
+
+    // Shuffle the numbers in numTable
+    for (let i = 0; i < numTable.length; i++) {
+        let currentNum = numTable[i];
+
+        if (shuffleTable[i] === 0) {
+            let newPos;
+            do {
+                newPos = Math.floor(rng() * numTable.length);
+            } while (shuffleTable[newPos] !== 0);
+
+            shuffleTable[i] = numTable[newPos];
+            shuffleTable[newPos] = currentNum;
+        }
+    }
+
+    // Reconstruct the shuffled text
+    for (let i = 0; i < shuffleTable.length; i++) {
+        let charIndex = shuffleTable[i] - 1;
+        let char = charTable[charIndex];
+        resultTable.push(char);
+    }
+
+    // Convert the result table into a string
+    let resultText = resultTable.join("");
+
+    return resultText;
+}
+
+function compressText(text) {
+  text = text.toLowerCase()
+  // Define the map of n-grams and their corresponding capital letters
+  // Create a regular expression to match the n-grams
+  const nGramRegex = new RegExp(Object.keys(nGramMap).join("|"), "g");
+
+  // Replace the matched n-grams with their corresponding capital letters
+  const compressedText = text.replace(nGramRegex, match => nGramMap[match]);
+
+  return compressedText;
+}
+
+function decompressText(compressedText) {
+  // Create a reverse map of capital letters to n-grams
+  const reverseMap = {};
+  for (const ngram in nGramMap) {
+    const capitalLetter = nGramMap[ngram];
+    reverseMap[capitalLetter] = ngram;
+  }
+
+  // Create a regular expression to match capital letters
+  const capitalLetterRegex = /[A-Z]/g;
+
+  // Replace the matched capital letters with their corresponding n-grams
+  const originalText = compressedText.replace(capitalLetterRegex, match => reverseMap[match]);
+
+  return originalText;
+}
+
+function spacesToEquals(inputString) {
+    const swappedString = inputString.replace(/ /g, '=');
+    return swappedString;
+}
+
+function equalsToSpaces(inputString) {
+    const swappedString = inputString.replace(/=/g, ' ');
+    return swappedString;
+}
+
+        function encodeText() {
+            const textInput = document.getElementById("text").value;
+            const passphraseInput = document.getElementById("passphrase").value;
+            const translatedText = spacesToEquals(shuffleText(compressText(textInput), passphraseInput));
+            document.getElementById("output").value = translatedText;
+        }
+
+        function decodeText() {
+            const textInput = document.getElementById("text").value;
+            const passphraseInput = document.getElementById("passphrase").value;
+            const decipheredText = equalsToSpaces(decompressText(shuffleText(textInput, passphraseInput)));
+            document.getElementById("output").value = decipheredText;
+        }
+    </script>
+</body>
+</html>
+
