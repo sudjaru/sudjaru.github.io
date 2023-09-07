@@ -141,8 +141,11 @@ function createSalt() {
 
 function salt(inputString) {
     const salt = createSalt();
+    let saltedString = "";
     inputString = shuffleText(inputString, salt);
-    inputString += salt;
+    saltedString = (inputString += salt);
+    
+    return saltedString;
 }
 
 function deSalt(inputString) {
