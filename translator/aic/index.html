@@ -215,21 +215,18 @@ function base27Decode(encodedString) {
   return decodedString;
 }
 
-const randomString = createSalt();
-console.log(randomString);
-
 
         function encodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const translatedText = salt(base27Encode(shuffleText(compressText(textInput), passphraseInput)));
+            const translatedText = shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput);
             document.getElementById("output").value = translatedText;
         }
 
         function decodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(textInput)), passphraseInput));
+            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(shuffleText(textInput, passphraseInput))), passphraseInput));
             document.getElementById("output").value = decipheredText;
         }
     </script>
