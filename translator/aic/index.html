@@ -250,18 +250,41 @@ function replaceLeadingSpace(inputString) {
   }
 }
 
+function replaceLastSpaceWithEquals(inputString) {
+  // Check if the input string is empty
+  if (inputString.length === 0) {
+    return inputString;
+  }
+
+  // Get the last character of the string
+  const lastCharacter = inputString.charAt(inputString.length - 1);
+
+  // Check if the last character is a space
+  if (lastCharacter === ' ') {
+    // Replace the last character with "="
+    return inputString.slice(0, -1) + '=';
+  } else {
+    // Return the input string as is
+    return inputString;
+  }
+}
+
+function equalsToSpaces(inputString) {
+    const swappedString = inputString.replace(/=/g, ' ');
+    return swappedString;
+}
 
         function encodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const translatedText = replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput)));
+            const translatedText = replaceLastSpaceWithEquals(replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput))));
             document.getElementById("output").value = translatedText;
         }
 
         function decodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(shuffleText(undoSpaceTrail(textInput), passphraseInput))), passphraseInput));
+            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(shuffleText(undoSpaceTrail(equalsToSpaces(textInput)), passphraseInput))), passphraseInput));
             document.getElementById("output").value = decipheredText;
         }
     </script>
