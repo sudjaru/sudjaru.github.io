@@ -242,10 +242,18 @@ function addSpaceToEndIfEndsWithNumber(inputString) {
   }
 }
 
+function replaceLeadingSpace(inputString) {
+  if (inputString.startsWith(" ")) {
+    return "1" + inputString.slice(1);
+  } else {
+    return inputString;
+  }
+}
+
         function encodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const translatedText = fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput));
+            const translatedText = replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput)));
             document.getElementById("output").value = translatedText;
         }
 
