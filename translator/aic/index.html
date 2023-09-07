@@ -215,18 +215,44 @@ function base27Decode(encodedString) {
   return decodedString;
 }
 
+function fixSpaceTrail(inputString) {
+  // Use a regular expression to find trailing spaces and replace them
+  return inputString.replace(/( {2,})/g, function(match) {
+    // Replace with the number of spaces followed by a single space
+    return match.length + ' ';
+  });
+}
+
+function undoSpaceTrail(inputString) {
+  // Use a regular expression to match spaces followed by a number and replace them
+  return inputString.replace(/(\d+) /g, function(match, spacesCount) {
+    // Replace with the specified number of spaces
+    return ' '.repeat(parseInt(spacesCount));
+  });
+}
+
+function addSpaceToEndIfEndsWithNumber(inputString) {
+  // Check if the input string ends with a number
+  if (/[\d]$/.test(inputString)) {
+    // If it does, add a space to the end and return the new string
+    return inputString + ' ';
+  } else {
+    // If it doesn't end with a number, return the original string
+    return inputString;
+  }
+}
 
         function encodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const translatedText = shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput);
+            const translatedText = fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput));
             document.getElementById("output").value = translatedText;
         }
 
         function decodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(shuffleText(textInput, passphraseInput))), passphraseInput));
+            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(shuffleText(undoSpaceTrail(addSpaceToEndIfEndsWithNumber(textInput)), passphraseInput))), passphraseInput));
             document.getElementById("output").value = decipheredText;
         }
     </script>
