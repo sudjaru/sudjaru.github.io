@@ -261,7 +261,7 @@ function replaceLeadingSpace(inputString) {
         function decodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(shuffleText(undoSpaceTrail(addSpaceToEndIfEndsWithNumber(textInput)), passphraseInput))), passphraseInput));
+            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(shuffleText(undoSpaceTrail(textInput), passphraseInput))), passphraseInput));
             document.getElementById("output").value = decipheredText;
         }
     </script>
