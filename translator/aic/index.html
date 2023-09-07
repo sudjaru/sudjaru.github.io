@@ -126,27 +126,108 @@ function decompressText(compressedText) {
   return originalText;
 }
 
-function spacesToEquals(inputString) {
-    const swappedString = inputString.replace(/ /g, '=');
-    return swappedString;
+function createSalt() {
+  var rngesus = new alea(Date.now())
+  const characters = 'abcdefghijklmnopqrstuvwxyz ';
+  let salt = '';
+
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(rngesus() * characters.length);
+    salt += characters.charAt(randomIndex);
+  }
+
+  return salt;
 }
 
-function equalsToSpaces(inputString) {
-    const swappedString = inputString.replace(/=/g, ' ');
-    return swappedString;
+function salt(inputString) {
+    const salt = createSalt();
+    inputString = shuffleText(inputString, salt);
+    inputString += salt;
 }
+
+function deSalt(inputString) {
+    const salt = inputString.slice(-10);
+    const string = inputString.slice(0, -10);
+    
+    let desaltedText = shuffleText(string, salt);
+    
+    return desaltedText;
+}
+
+function base27Encode(inputString) {
+  // Define the characters for mapping
+  const charMap = "wdbausrhylet ozknqgmfcixvpj";
+  
+  // Convert the input string to an array of ASCII values
+  const asciiValues = [...inputString].map(char => char.charCodeAt(0));
+  
+  // Initialize an empty array to store the trinary digits
+  const trinaryDigits = [];
+  
+  // Convert each ASCII value to trinary and concatenate
+  for (const value of asciiValues) {
+    let trinary = value.toString(3);
+    trinary = trinary.padStart(5, '0');
+    trinaryDigits.push(trinary);
+  }
+  
+  // Concatenate all trinary digits and add extra 0s
+  const concatenatedTrinary = trinaryDigits.join('') + '0'.repeat(trinaryDigits.length % 3);
+  
+  // Break down into groups of 3 and convert to integers
+  const integerGroups = concatenatedTrinary.match(/.{3}/g).map(group => parseInt(group, 3));
+  
+  // Map integers to characters and concatenate
+  const encodedString = integerGroups.map(integer => charMap[integer]).join('');
+  
+  return encodedString;
+}
+
+// Decoding function
+function base27Decode(encodedString) {
+  // Define the characters for mapping
+  const charMap = "wdbausrhylet ozknqgmfcixvpj";
+  
+  // Reverse mapping from characters to integers
+  const reverseCharMap = {};
+  for (let i = 0; i < charMap.length; i++) {
+    reverseCharMap[charMap[i]] = i;
+  }
+  
+  // Convert the encoded string to an array of integers
+  const integerGroups = [...encodedString].map(char => reverseCharMap[char]);
+  
+  // Convert integers to trinary and concatenate
+  const concatenatedTrinary = integerGroups.map(integer => integer.toString(3).padStart(3, '0')).join('');
+  
+  // Remove the trailing extra 0s
+  const trimmedTrinary = concatenatedTrinary.replace(/0+$/, '');
+  
+  // Break down into groups of 5 and convert to ASCII values
+  const asciiValues = trimmedTrinary.match(/.{5}/g).map(group => parseInt(group, 3));
+  
+  // Convert ASCII values to characters and concatenate
+  const decodedString = String.fromCharCode(...asciiValues);
+  
+  return decodedString;
+}
+
+const randomString = createSalt();
+console.log(randomString);
+
 
         function encodeText() {
+            let salt = createSalt()
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const translatedText = spacesToEquals(shuffleText(compressText(textInput), passphraseInput));
+            const translatedText = base27Encode(shuffleText(compressText(textInput), passphraseInput));
             document.getElementById("output").value = translatedText;
         }
 
         function decodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const decipheredText = equalsToSpaces(decompressText(shuffleText(textInput, passphraseInput)));
+            const decipheredText = base27Decode(decompressText(shuffleText(textInput, passphraseInput)));
             document.getElementById("output").value = decipheredText;
         }
     </script>
