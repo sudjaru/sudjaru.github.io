@@ -250,10 +250,28 @@ function replaceLeadingSpace(inputString) {
   }
 }
 
+function replaceLastSpaceWithOne(inputString) {
+  // Check if the input string is not empty
+  if (inputString.length > 0) {
+    // Get the last character of the input string
+    const lastChar = inputString.charAt(inputString.length - 1);
+
+    // Check if the last character is a space
+    if (lastChar === ' ') {
+      // Replace the last space with '1'
+      const modifiedString = inputString.slice(0, -1) + '1';
+      return modifiedString;
+    }
+  }
+  
+  // Return the original string if no space was found at the end
+  return inputString;
+}
+
         function encodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const translatedText = replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput)));
+            const translatedText = replaceLastSpaceWithOne(replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput))));
             document.getElementById("output").value = translatedText;
         }
 
