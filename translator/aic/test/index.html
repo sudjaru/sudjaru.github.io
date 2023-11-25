@@ -12,8 +12,8 @@
     <label for="text">Enter Text:</label><br>
     <textarea type="text" id="text" placeholder="Text to encode/decode" rows="5" cols="50" oninput="processText()"></textarea><br><br>
 
-    <label for="passphrase">Enter Passphrase:</label>
-    <input type="text" id="passphrase" placeholder="Passphrase" oninput="processText()"><br>
+    <label for="passphrase">Enter Passphrases:</label>
+    <input type="text" id="passphrase1" placeholder="Passphrase 1" oninput="processText()"><input type="text" id="passphrase2" placeholder="Passphrase 2" oninput="processText()"><br>
 
     <label>Encode </label><button onclick="toggleEncodeDecode()">( )::)</button><label> Decode</label><br><br>
 
@@ -210,13 +210,14 @@ function toggleEncodeDecode() {
 
 function processText() {
     const textInput = document.getElementById("text").value;
-    const passphraseInput = document.getElementById("passphrase").value;
+    const passphraseInput1 = document.getElementById("passphrase1").value;
+    const passphraseInput2 = document.getElementById("passphrase2").value;
 
     if (isEncoding) {
-        const translatedText = replaceLastSpaceWithEquals(replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(salt(base27Encode(shuffleText(textInput, passphraseInput)))), passphraseInput))));
+        const translatedText = replaceLastSpaceWithEquals(replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(salt(base27Encode(shuffleText(textInput, passphraseInput1)))), passphraseInput2))));
         document.getElementById("output").value = translatedText;
     } else {
-        const decipheredText = shuffleText(base27Decode(deSalt(deSalt(shuffleText(undoSpaceTrail(equalsToSpaces(textInput)), passphraseInput)))), passphraseInput);
+        const decipheredText = shuffleText(base27Decode(deSalt(deSalt(shuffleText(undoSpaceTrail(equalsToSpaces(textInput)), passphraseInput2)))), passphraseInput1);
         document.getElementById("output").value = decipheredText;
     }
 }
