@@ -10,7 +10,7 @@
     <h1>Ashleyan Indecipherable Code Translator</h1>
 
     <label for="text">Enter Text:</label>
-    <input type="text" id="text" placeholder="Text to encode/decode" size="50"><br>
+    <textarea type="text" id="text" placeholder="Text to encode/decode" rows="5" cols="50"></textarea><br>
 
     <label for="passphrase">Enter Passphrase:</label>
     <input type="text" id="passphrase" placeholder="Passphrase for encoding/decoding"><br>
@@ -22,41 +22,10 @@
     <textarea id="output" rows="5" cols="50"></textarea>
     
     <script>
-        // Define a map to store the n-grams and their corresponding capital letters
-const nGramMap = {
-    "sud": "A",
-    "ash": "B",
-    "the": "C",
-    "and": "D",
-    "tha": "E",
-    "ent": "F",
-    "ing": "G",
-    "ion": "H",
-    "tio": "I",
-    "has": "J",
-    "was": "K",
-    "th": "L",
-    "in": "M",
-    "en": "N",
-    "nt": "O",
-    "ru": "P",
-    "an": "Q",
-    "am": "R",
-    "is": "S",
-    "it": "T",
-    "de": "U",
-    "te": "V",
-    "ar": "W",
-    "en": "X",
-    "ed": "Y",
-    "on": "Z",
-};
 
 function shuffleText(inputText, seed) {
-    // Set random seed
     var rng = new alea(seed);
 
-    // Reversible character shuffler
     let charTable = [];
     let numTable = [];
     let shuffleTable = [];
@@ -97,35 +66,6 @@ function shuffleText(inputText, seed) {
     return resultText;
 }
 
-function compressText(text) {
-  text = text.toLowerCase()
-  // Define the map of n-grams and their corresponding capital letters
-  // Create a regular expression to match the n-grams
-  const nGramRegex = new RegExp(Object.keys(nGramMap).join("|"), "g");
-
-  // Replace the matched n-grams with their corresponding capital letters
-  const compressedText = text.replace(nGramRegex, match => nGramMap[match]);
-
-  return compressedText;
-}
-
-function decompressText(compressedText) {
-  // Create a reverse map of capital letters to n-grams
-  const reverseMap = {};
-  for (const ngram in nGramMap) {
-    const capitalLetter = nGramMap[ngram];
-    reverseMap[capitalLetter] = ngram;
-  }
-
-  // Create a regular expression to match capital letters
-  const capitalLetterRegex = /[A-Z]/g;
-
-  // Replace the matched capital letters with their corresponding n-grams
-  const originalText = compressedText.replace(capitalLetterRegex, match => reverseMap[match]);
-
-  return originalText;
-}
-
 function createSalt() {
   var rngesus = new alea(Date.now())
   const characters = 'abcdefghijklmnopqrstuvwxyz ';
@@ -158,7 +98,6 @@ function deSalt(inputString) {
 }
 
 function base27Encode(inputString) {
-  // Define the characters for mapping
   const charMap = "wdbausrhylet ozknqgmfcixvpj";
   
   // Convert the input string to an array of ASCII values
@@ -186,9 +125,7 @@ function base27Encode(inputString) {
   return encodedString;
 }
 
-// Decoding function
 function base27Decode(encodedString) {
-  // Define the characters for mapping
   const charMap = "wdbausrhylet ozknqgmfcixvpj";
   
   // Reverse mapping from characters to integers
@@ -216,28 +153,21 @@ function base27Decode(encodedString) {
 }
 
 function fixSpaceTrail(inputString) {
-  // Use a regular expression to find trailing spaces and replace them
   return inputString.replace(/( {2,})/g, function(match) {
-    // Replace with the number of spaces followed by a single space
     return match.length + ' ';
   });
 }
 
 function undoSpaceTrail(inputString) {
-  // Use a regular expression to match spaces followed by a number and replace them
   return inputString.replace(/(\d+) /g, function(match, spacesCount) {
-    // Replace with the specified number of spaces
     return ' '.repeat(parseInt(spacesCount));
   });
 }
 
 function addSpaceToEndIfEndsWithNumber(inputString) {
-  // Check if the input string ends with a number
   if (/[\d]$/.test(inputString)) {
-    // If it does, add a space to the end and return the new string
     return inputString + ' ';
   } else {
-    // If it doesn't end with a number, return the original string
     return inputString;
   }
 }
@@ -251,20 +181,16 @@ function replaceLeadingSpace(inputString) {
 }
 
 function replaceLastSpaceWithEquals(inputString) {
-  // Check if the input string is empty
   if (inputString.length === 0) {
     return inputString;
   }
 
-  // Get the last character of the string
   const lastCharacter = inputString.charAt(inputString.length - 1);
 
-  // Check if the last character is a space
   if (lastCharacter === ' ') {
-    // Replace the last character with "="
     return inputString.slice(0, -1) + '=';
   } else {
-    // Return the input string as is
+
     return inputString;
   }
 }
