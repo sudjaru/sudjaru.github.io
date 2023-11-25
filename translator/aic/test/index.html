@@ -13,9 +13,9 @@
     <textarea type="text" id="text" placeholder="Text to encode/decode" rows="5" cols="50" oninput="processText()"></textarea><br><br>
 
     <label for="passphrase">Enter Passphrase:</label>
-    <input type="text" id="passphrase" placeholder="Passphrase for encoding/decoding" oninput="processText()"><br>
+    <input type="text" id="passphrase" placeholder="Passphrase" oninput="processText()"><br>
 
-    <button onclick="toggleEncodeDecode()">Toggle Encode/Decode</button><br><br>
+    <label>Encode</label><button onclick="toggleEncodeDecode()">"<--"</button><label>Decode</label><br><br>
 
     <label for="output">Result:</label><br>
     <textarea id="output" rows="5" cols="50"></textarea>
@@ -203,7 +203,7 @@ let isEncoding = true;
 
 function toggleEncodeDecode() {
     isEncoding = !isEncoding;
-    const buttonText = isEncoding ? "Toggle Encode/Decode" : "Toggle Decode/Encode";
+    const buttonText = isEncoding ? "<--" : "-->";
     document.querySelector('button').innerText = buttonText;
     processText();
 }
