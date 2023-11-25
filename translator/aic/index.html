@@ -277,14 +277,14 @@ function equalsToSpaces(inputString) {
         function encodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const translatedText = replaceLastSpaceWithEquals(replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(compressText(textInput), passphraseInput))), passphraseInput))));
+            const translatedText = replaceLastSpaceWithEquals(replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(textInput), passphraseInput))), passphraseInput)));
             document.getElementById("output").value = translatedText;
         }
 
         function decodeText() {
             const textInput = document.getElementById("text").value;
             const passphraseInput = document.getElementById("passphrase").value;
-            const decipheredText = decompressText(shuffleText(base27Decode(deSalt(shuffleText(undoSpaceTrail(equalsToSpaces(textInput)), passphraseInput))), passphraseInput));
+            const decipheredText = shuffleText(base27Decode(deSalt(shuffleText(undoSpaceTrail(equalsToSpaces(textInput)), passphraseInput))), passphraseInput);
             document.getElementById("output").value = decipheredText;
         }
     </script>
