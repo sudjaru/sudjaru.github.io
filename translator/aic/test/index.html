@@ -15,7 +15,7 @@
     <label for="passphrase">Enter Passphrase:</label>
     <input type="text" id="passphrase" placeholder="Passphrase" oninput="processText()"><br>
 
-    <label>Encode</label><button onclick="toggleEncodeDecode()">( )::)</button><label>Decode</label><br><br>
+    <label>Encode </label><button onclick="toggleEncodeDecode()">( )::)</button><label> Decode</label><br><br>
 
     <label for="output">Result:</label><br>
     <textarea id="output" rows="5" cols="50"></textarea>
@@ -70,7 +70,7 @@ function createSalt() {
   const characters = 'abcdefghijklmnopqrstuvwxyz ';
   let salt = '';
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 5; i++) {
     const randomIndex = Math.floor(rngesus() * characters.length);
     salt += characters.charAt(randomIndex);
   }
@@ -88,8 +88,8 @@ function salt(inputString) {
 }
 
 function deSalt(inputString) {
-    const salt = inputString.slice(-10);
-    const string = inputString.slice(0, -10);
+    const salt = inputString.slice(-5);
+    const string = inputString.slice(0, -5);
     
     let desaltedText = shuffleText(string, salt);
     
@@ -213,10 +213,10 @@ function processText() {
     const passphraseInput = document.getElementById("passphrase").value;
 
     if (isEncoding) {
-        const translatedText = replaceLastSpaceWithEquals(replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(base27Encode(shuffleText(textInput, passphraseInput))), passphraseInput))));
+        const translatedText = replaceLastSpaceWithEquals(replaceLeadingSpace(fixSpaceTrail(shuffleText(salt(salt(base27Encode(shuffleText(textInput, passphraseInput)))), passphraseInput))));
         document.getElementById("output").value = translatedText;
     } else {
-        const decipheredText = shuffleText(base27Decode(deSalt(shuffleText(undoSpaceTrail(equalsToSpaces(textInput)), passphraseInput))), passphraseInput);
+        const decipheredText = shuffleText(base27Decode(deSalt(deSalt(shuffleText(undoSpaceTrail(equalsToSpaces(textInput)), passphraseInput)))), passphraseInput);
         document.getElementById("output").value = decipheredText;
     }
 }
