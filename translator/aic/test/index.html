@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Encoding and Decoding</title>
+    <title>SIC tool</title>
     <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/lib/alea.min.js"></script>
 </head>
 <body>
-    <h1>Ashleyan Indecipherable Code Translator</h1>
+    <h1>Sudjaru Indecipherable Code Tool</h1>
+
+    <p>
+    This is the Sudjaru Indecipherable Code (SIC) tool.<br>
+    Put what you want to encode or decode into the input box, specify two passphrases, and an output will be indecipherable* unless the other person also has the codes.
+    </p><br>
+
+    <table>
+    <tr>
+    <td>
 
     <label for="text">Enter Text:</label><br>
     <textarea type="text" id="text" placeholder="Text to encode/decode" rows="5" cols="50" oninput="processText()"></textarea><br><br>
@@ -19,6 +28,30 @@
 
     <label for="output">Result:</label><br>
     <textarea id="output" rows="5" cols="50"></textarea>
+    
+    </td>
+    </tr>
+    </table>
+
+    <br>
+    
+    <h3>NOTES:</h3>
+
+    <ul>
+      <li>The first passphrase is used to shuffle the text after the bitwise operations, which makes it fundamentally more important than the second passphrase.</li><br>
+      <li>Both passphrases are arguably important for different reasons, but for smaller pieces of text the second passphrase becomes of less use. <br>I recommend that for lengthy text you wish to secure, you should place more importance on both passphrases being secure, rather than just the first.</li><br>
+      <li>*Indecipherable meaning:
+        <ol>
+	        <li>The text cannot be reasonably be decoded without both passphrases being known, and</li>
+	        <li>The text cannot reasonably be decoded without the help of this tool.</li>
+	      <ol>
+      </li>
+    </ul>
+
+<p>
+This translator is NOT TO BE USED for HIGH SECURITY applications.<br> 
+It was designed for roleplay purposes for game communities.<br> I am not liable for the security of any information encoded using my code.
+</p>
     
     <script>
 
