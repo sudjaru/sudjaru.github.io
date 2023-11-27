@@ -1,66 +1,53 @@
-/* Styles for my homepage!
-    Author: Isaac Vazquez
-    Date: 6/3/2023
-*/
- 
-/* Body styles */
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
-  background-color: #f2f2f2;
+  padding: 0;
+  background-color: #f5f5f5;
 }
 
-/* Heading styles */
 h1 {
-  font-size: 36px;
   color: #333;
-  text-align: center;
-  margin-bottom: 20px;
 }
 
-/* Paragraph styles */
 p {
-  font-size: 16px;
   line-height: 1.5;
   color: #555;
-  margin-bottom: 15px;
 }
 
-/* Link styles */
-a {
-  color: #007bff;
-  text-decoration: none;
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
-/* Table styles */
-/* Table styles */
-table {
-  max-width: 600px;
-  margin: 0 auto;
+textarea, input {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 30px;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
-th, td {
+button {
+  background-color: #4caf50;
+  color: white;
   padding: 10px;
-  text-align: left;
+  border: none;
+  cursor: pointer;
 }
 
-th {
-  background-color: #007bff;
-  color: #fff;
+button:hover {
+  background-color: #45a049;
 }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2;
+ul {
+  list-style-type: none;
+  padding: 0;
 }
 
-tr:hover {
-  background-color: #ddd;
+li {
+  margin-bottom: 10px;
 }
 
+h3 {
+  color: #333;
+}
